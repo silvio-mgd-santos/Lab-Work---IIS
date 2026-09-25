@@ -1,6 +1,6 @@
 # Example Data (X, y) — Aviation Cybersecurity
 
-This folder describes (X, y) example that could be built from the three scientific articles analyzed on aviation cybersecurity, in the context of a supervised learning model.
+This folder describes example (X, y) pairs that could be built from the three scientific articles analyzed on aviation cybersecurity, in the context of a supervised learning model.
 
 ## Context
 
@@ -10,54 +10,72 @@ The three articles analyzed address aviation cybersecurity from three distinct, 
 2. **Dave, G., Choudhary, G., Sihag, V., You, I., & Choo, K.-K. R. (2022).** *Cyber security challenges in aviation communication, navigation, and surveillance.* Computers & Security, 112, 102516.
 3. **AlMarri, M., Bahroun, Z., & Hassan, N. M. (2026).** *Artificial Intelligence for safety and resilience in airport Transportation Systems: A systematic review of Operational, Security, and environmental risks.* Transportation Research Interdisciplinary Perspectives, 37, 101961.
 
-A model built from a single article would only capture one dimension of the problem (governance, technical detection, or systemic context). Article 3 explicitly identifies this fragmentation as a literature gap, recommending the development of "Integrated Risk-Management Ecosystems" where detection, assessment, and mitigation function as a connected system. The (X, y) example below integrates the three sources with that goal in mind.
+Below, a primary **integrated example** combines all three articles into a single model. This is followed by three **individual examples**, one per article, showing how each source could stand alone as a narrower supervised learning problem.
 
-## Problem
+---
 
-Predict the **cybersecurity risk level** of an aviation system or asset (e.g., a CNS subsystem, an airport, a connected aircraft), combining:
-- the **organizational governance** dimension (Article 1)
-- the **technical vulnerability of CNS protocols** dimension (Article 2)
-- the **systemic airport risk context** dimension (Article 3)
+## Primary Example — Integrated Aviation Cybersecurity Risk Model
 
-## X (Features)
+**Problem:** Predict the **cybersecurity risk level** of an aviation system or asset (e.g., a CNS subsystem, an airport, a connected aircraft), combining organizational governance (Article 1), technical CNS vulnerability (Article 2), and systemic airport risk context (Article 3).
 
-### From Article 1 — Strategic governance and priority (DEMATEL-QSFS)
-The seven criteria used by the authors, each scored on a 0–1 scale:
-- `TDS` — Threat Detection Systems (maturity of threat detection systems)
-- `DEP` — Data Encryption Protocols (maturity of encryption protocols)
-- `RC` — Regulatory Compliance (level of regulatory compliance)
-- `IRP` — Incident Response Plans (maturity of incident response plans)
-- `UT` — User Training (level of user training)
-- `ACM` — Access Control Mechanisms (maturity of access controls)
-- `NSS` — Network Security Solutions (maturity of network security solutions)
+### X (Features)
 
-> Note: the authors identified `RC` and `TDS` as the most influential cause factors (cause weights of 0.20 and 0.25), and `UT`/`DEP` as the most impacted effect factors. In the model, `RC` and `TDS` should be treated as drivers (higher weight), not as neutral variables.
+**From Article 1 — Strategic governance and priority (DEMATEL-QSFS):**
+- `TDS` — Threat Detection Systems maturity (0–1)
+- `DEP` — Data Encryption Protocols maturity (0–1)
+- `RC` — Regulatory Compliance level (0–1)
+- `IRP` — Incident Response Plans maturity (0–1)
+- `UT` — User Training level (0–1)
+- `ACM` — Access Control Mechanisms maturity (0–1)
+- `NSS` — Network Security Solutions maturity (0–1)
 
-### From Article 2 — Technical vulnerability of CNS systems
-- `subsystem` — category of the system involved: `communication` (VHF/CPDLC), `navigation` (VOR/ILS/DME), `surveillance` (PSR/SSR/ADS-B)
-- `attack_type` — type of attack observed, per the article's taxonomy: `eavesdropping`, `jamming`, `flooding`, `injection`, `alteration`, `spoofing`
-- `compromised_property` — which security property is at risk: `confidentiality`, `integrity`, `availability`
+> The authors identified `RC` and `TDS` as the most influential cause factors (cause weights 0.20 and 0.25); these should carry higher weight in the model, not be treated as neutral inputs.
 
-> Note: protocols such as ADS-B and CPDLC lack native authentication, making them vulnerable to most of these attack types simultaneously.
+**From Article 2 — Technical CNS vulnerability:**
+- `subsystem` — `communication` (VHF/CPDLC), `navigation` (VOR/ILS/DME), `surveillance` (PSR/SSR/ADS-B)
+- `attack_type` — `eavesdropping`, `jamming`, `flooding`, `injection`, `alteration`, `spoofing`
+- `compromised_property` — `confidentiality`, `integrity`, `availability`
 
-### From Article 3 — Systemic airport risk context
-- `risk_cycle_stage` — stage of the risk management cycle: `identification`, `assessment`, `mitigation`
-- `domain_maturity` — indicator of the domain's methodological maturity (0–1), reflecting the article's finding that security/cybersecurity risks are less mature and less connected to predictive frameworks than operational and environmental risks
+**From Article 3 — Systemic airport risk context:**
+- `risk_cycle_stage` — `identification`, `assessment`, `mitigation`
+- `domain_maturity` — methodological maturity of the risk domain (0–1); the article found security/cybersecurity risks less mature and less connected to predictive frameworks than operational/environmental risks
 
-## y (Target)
+### y (Target)
+**Cybersecurity risk level** — ordinal classification: `Low` / `Medium` / `High` / `Critical`
 
-**Cybersecurity risk level** — ordinal classification in 4 classes:
-- `Low`
-- `Medium`
-- `High`
-- `Critical`
+Reference calibration from real incidents cited in Article 1: the AASL breach (2024), the San Francisco International Airport ransomware attack (2020), the Heathrow DDoS attack (2015), and the Bristol Airport supply-chain attack (2018).
 
-Reference calibration based on real incidents cited in Article 1:
-- Airport and Aviation Services Sri Lanka (AASL) breach, 2024 — exposure of 7,000+ records
-- Ransomware at San Francisco International Airport, 2020
-- DDoS attack on Heathrow Airport, 2015
-- Supply-chain attack on Bristol Airport, 2018
+### Rationale
+Article 3 explicitly notes that most studies treat risks in isolation, "resulting in fragmented insights," and proposes integrated risk-management ecosystems as a future research direction. This example follows that recommendation directly.
 
-## Rationale for integration
+---
 
-A single unified model (rather than three separate models) directly reflects an explicit recommendation from the reviewed literature: Article 3 notes that most studies treat risks in isolation, "resulting in fragmented insights," and proposes as a future research agenda the development of integrated risk-management ecosystems where detection, assessment, and mitigation function as one connected system. This (X, y) example follows that logic: it brings together strategic governance (Article 1), real-time technical detection (Article 2), and the systemic context of airport risk (Article 3) into a single classification problem.
+## Additional Example A — Based on Article 1 (Strategic Prioritization)
+
+**Problem:** Predict which cybersecurity initiative an aviation organization should prioritize.
+
+**X:** Expert-assigned fuzzy scores (via QSFS) for the seven DEMATEL criteria — `TDS`, `DEP`, `RC`, `IRP`, `UT`, `ACM`, `NSS` — each on a 0–1 influence/interdependence scale.
+
+**y:** Strategic priority level of the initiative — `Low` / `Medium` / `High` / `Critical`
+
+**Rationale:** This mirrors the article's own DEMATEL-QSFS decision logic directly — a supervised model would learn to predict the priority ranking that the method assigns, given new sets of expert scores.
+
+## Additional Example B — Based on Article 2 (CNS Attack Detection)
+
+**Problem:** Detect and classify an attack on a CNS system in real time.
+
+**X:** Signal strength (RSSI), ADS-B position deviation between consecutive messages, timestamp consistency (drift), number of independent ground receivers confirming the same signal, message frequency.
+
+**y:** Attack class — `Benign` / `GPS Spoofing` / `ADS-B Injection` / `Jamming` / `DoS` (multi-class classification)
+
+**Rationale:** The article documents SDR-based (software-defined radio) attacks targeting popular wireless technologies; this example models exactly the kind of real-time detection an aviation intrusion detection system (IDS) would need to perform.
+
+## Additional Example C — Based on Article 3 (Airport Risk Domain Classification)
+
+**Problem:** Predict the dominant risk domain for a given airport process or system.
+
+**X:** System/process type (apron, baggage systems, local ATC), daily traffic volume, weather severity, number of remote/connected (IoT) access points, incident history over the past 12 months.
+
+**y:** Predicted dominant risk domain — `Operational` / `Security` / `Environmental` / `Occupational` / `Human` (multi-class classification)
+
+**Rationale:** This aligns with the article's core objective — using AI to support the risk-management cycle (identification → assessment → mitigation) — specifically modeling the hazard identification/classification stage.
