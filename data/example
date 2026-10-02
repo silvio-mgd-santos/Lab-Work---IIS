@@ -1,9 +1,1 @@
-id,X_description,y_risk_level
-1,"Airport with mature threat detection, strong encryption, full regulatory compliance, tested incident response plans, regular user training, strict access control, and solid network security (average maturity score: 0.71)",Low
-2,"Airport with moderate threat detection, partial encryption coverage, inconsistent regulatory compliance, outdated incident response plans, limited user training, weak access control, and basic network security (average maturity score: 0.37)",High
-3,"Airport with weak threat detection, minimal encryption, poor regulatory compliance, no tested incident response plan, rare user training, loose access control, and outdated network security (average maturity score: 0.24)",High
-4,"Airport with almost no threat detection, no encryption, failing regulatory compliance, no incident response plan, no user training, no access control, and no network security measures (average maturity score: 0.11)",High
-5,"Airport with excellent threat detection, strong encryption, full regulatory compliance, well-tested incident response plans, frequent user training, strict access control, and advanced network security (average maturity score: 0.80)",Low
-6,"Airport with average threat detection, average encryption, average regulatory compliance, average incident response readiness, average user training, average access control, and average network security (average maturity score: 0.46)",High
-7,"Airport with good threat detection, good encryption, good regulatory compliance, adequate incident response plans, adequate user training, adequate access control, and adequate network security (average maturity score: 0.53)",Low
-8,"Airport with poor threat detection, poor encryption, poor regulatory compliance, no incident response plan, minimal user training, weak access control, and weak network security (average maturity score: 0.21)",High
+
