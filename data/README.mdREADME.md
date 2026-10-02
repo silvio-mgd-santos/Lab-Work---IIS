@@ -10,43 +10,40 @@ The three articles analyzed address aviation cybersecurity from three distinct, 
 2. **Dave, G., Choudhary, G., Sihag, V., You, I., & Choo, K.-K. R. (2022).** *Cyber security challenges in aviation communication, navigation, and surveillance.* Computers & Security, 112, 102516.
 3. **AlMarri, M., Bahroun, Z., & Hassan, N. M. (2026).** *Artificial Intelligence for safety and resilience in airport Transportation Systems: A systematic review of Operational, Security, and environmental risks.* Transportation Research Interdisciplinary Perspectives, 37, 101961.
 
-Below, a primary **integrated example** combines all three articles into a single model. This is followed by three **individual examples**, one per article, showing how each source could stand alone as a narrower supervised learning problem.
+Below, a primary **simplified example** uses features from Article 1 with a clear threshold rule. This is followed by three **individual examples**, one per article, showing how each source could define its own narrower supervised learning problem.
 
 ---
 
-## Primary Example — Integrated Aviation Cybersecurity Risk Model
+## Primary Example — Aviation Cybersecurity Risk Classification (Simplified)
 
-**Problem:** Predict the **cybersecurity risk level** of an aviation system or asset (e.g., a CNS subsystem, an airport, a connected aircraft), combining organizational governance (Article 1), technical CNS vulnerability (Article 2), and systemic airport risk context (Article 3).
+**Problem:** Predict whether an aviation organization's cybersecurity posture represents a `Low` or `High` risk, based on the maturity of its governance practices.
 
 ### X (Features)
 
-**From Article 1 — Strategic governance and priority (DEMATEL-QSFS):**
-- `TDS` — Threat Detection Systems maturity (0–1)
-- `DEP` — Data Encryption Protocols maturity (0–1)
-- `RC` — Regulatory Compliance level (0–1)
-- `IRP` — Incident Response Plans maturity (0–1)
-- `UT` — User Training level (0–1)
-- `ACM` — Access Control Mechanisms maturity (0–1)
-- `NSS` — Network Security Solutions maturity (0–1)
+The seven criteria defined and empirically weighted in Article 1, each scored on a 0–1 maturity scale:
+- `TDS` — Threat Detection Systems maturity
+- `DEP` — Data Encryption Protocols maturity
+- `RC` — Regulatory Compliance level
+- `IRP` — Incident Response Plans maturity
+- `UT` — User Training level
+- `ACM` — Access Control Mechanisms maturity
+- `NSS` — Network Security Solutions maturity
 
-> The authors identified `RC` and `TDS` as the most influential cause factors (cause weights 0.20 and 0.25); these should carry higher weight in the model, not be treated as neutral inputs.
-
-**From Article 2 — Technical CNS vulnerability:**
-- `subsystem` — `communication` (VHF/CPDLC), `navigation` (VOR/ILS/DME), `surveillance` (PSR/SSR/ADS-B)
-- `attack_type` — `eavesdropping`, `jamming`, `flooding`, `injection`, `alteration`, `spoofing`
-- `compromised_property` — `confidentiality`, `integrity`, `availability`
-
-**From Article 3 — Systemic airport risk context:**
-- `risk_cycle_stage` — `identification`, `assessment`, `mitigation`
-- `domain_maturity` — methodological maturity of the risk domain (0–1); the article found security/cybersecurity risks less mature and less connected to predictive frameworks than operational/environmental risks
+A derived feature, `avg_score`, is computed as the simple average of the seven criteria above.
 
 ### y (Target)
-**Cybersecurity risk level** — ordinal classification: `Low` / `Medium` / `High` / `Critical`
 
-Reference calibration from real incidents cited in Article 1: the AASL breach (2024), the San Francisco International Airport ransomware attack (2020), the Heathrow DDoS attack (2015), and the Bristol Airport supply-chain attack (2018).
+**Cybersecurity risk level** — binary classification: `Low` / `High`
 
-### Rationale
-Article 3 explicitly notes that most studies treat risks in isolation, "resulting in fragmented insights," and proposes integrated risk-management ecosystems as a future research direction. This example follows that recommendation directly.
+**Rule:** if `avg_score >= 0.5`, the system is classified as `Low` risk (mature security posture); if `avg_score < 0.5`, it is classified as `High` risk (immature security posture).
+
+### Why only Article 1's features, but all three articles matter
+
+This simplified version uses only the governance maturity criteria from Article 1 to keep the dataset easy to read and the classification rule transparent. However, Articles 2 and 3 justify *why* these criteria matter in practice:
+- **Article 2** shows concretely how weak threat detection and encryption translate into exploitable technical vulnerabilities in CNS protocols (e.g., unauthenticated ADS-B and CPDLC messages being susceptible to spoofing, jamming, and injection attacks).
+- **Article 3** shows that security-related risks at airports are systemically less mature and less integrated into predictive safety frameworks than operational or environmental risks — reinforcing why low governance maturity (as captured by `avg_score`) is a meaningful proxy for elevated real-world risk.
+
+So while the dataset columns come from Article 1, the choice of criteria and the interpretation of the `Low`/`High` threshold are grounded in findings from all three articles.
 
 ---
 
@@ -79,3 +76,10 @@ Article 3 explicitly notes that most studies treat risks in isolation, "resultin
 **y:** Predicted dominant risk domain — `Operational` / `Security` / `Environmental` / `Occupational` / `Human` (multi-class classification)
 
 **Rationale:** This aligns with the article's core objective — using AI to support the risk-management cycle (identification → assessment → mitigation) — specifically modeling the hazard identification/classification stage.
+
+---
+
+## Files in this directory
+
+- `README.md` — this file
+- `examples.csv` — sample data rows for the primary (simplified) example above
