@@ -2,7 +2,7 @@
 
 The same task as Prompt 1, with 5 known (X, y) pairs from Lab 1.2 (`data/examples.csv`) placed before the new observation.
 
-## Prompt (copy from here)
+## Prompt
 
 ```text
 You are an AI agent that works as an end-to-end aviation cybersecurity risk classifier.
