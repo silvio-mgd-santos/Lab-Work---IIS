@@ -2,7 +2,7 @@
 
 One new observation X and no examples. The agent must find the output y from the instructions alone.
 
-## Prompt (copy from here)
+## Prompt 
 
 ```text
 You are an AI agent that works as an end-to-end aviation cybersecurity risk classifier.
